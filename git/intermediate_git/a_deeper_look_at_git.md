@@ -2,36 +2,19 @@
 
 Git is a crucial skill to have, whether you're just a hobbyist or you aim to become a professional web developer.  It's the "save" button on steroids and allows for seamless collaboration.  There really aren't all that many commands for you to learn, but sometimes the real difficulty of Git comes from visualizing what's happening.
 
-In this lesson, we'll help with the visualization by diving deeper than just the `git add` and `git commit` and `git push` commands you've mostly been using. We'll cover topics such as Remotes, Pointers, and Changing Git History. This will expand your understanding of what's actually going on under the hood with Git.
+In this lesson, we'll help with the visualization by diving deeper than just the `git add` and `git commit` and `git push` commands you've mostly been using. We'll cover topics such as Remotes and Pointers. This will expand your understanding of what's actually going on under the hood with Git.
 
-It is **very important** to take a look at all of this before progressing any further with the curriculum. The project work is becoming more and more complex, so using a disciplined Git workflow is no longer optional. Hopefully, after going through this lesson, you'll be much more comfortable changing your Git history and have a better understanding of Git as a whole.
+It is **very important** to take a look at all of this before progressing any further with the curriculum. The project work is becoming more and more complex, so using a disciplined Git workflow is no longer optional. Hopefully, after going through this lesson, you'll have a better understanding of Git as a whole.
 
 ### Lesson overview
 
 This section contains a general overview of topics that you will learn in this lesson.
 
-- History-changing Git commands.
-- Different ways of changing history.
-- Using remotes to change history.
-- Dangers of history-changing operations.
-- Best practices of history-changing operations.
 - Pointers.
-
-### Changing history
-
-So let's say you're comfortable writing good commit messages and you're working with branches to have a good Git workflow going. But nobody is perfect, and as you're writing some beautiful code something goes wrong! Maybe you commit too early and are missing a file. Maybe you mess up one of your commit messages and omit a vital detail.
-
-Let's look at some ways we can change recent and distant history to fit our needs. We're going to cover how to:
-
-- Change our most recent commit
-- Change multiple commit messages
-- Reorder commits
-- Squash commits together
-- Split up commits
 
 #### Getting set up
 
-Before we get started with the lesson, let's create a Git playground in which we can safely follow along with the code and perform history-changing operations. Go to GitHub, and as you have in the past, create a new repository. Call it whatever you'd like, and clone this repository to your local system. Now, let's `cd` into the repository we just cloned and create some new files! Once you're in the repository, follow along with the following commands (including the typo). Look them up if you're confused about anything that's happening.
+Before we get started with the lesson, let's create a Git playground in which we can safely follow along with the code. 
 
 ```bash
 touch test{1..4}.md
@@ -42,7 +25,7 @@ git add test3.md && git commit -m 'Create third file and create fourth file'
 
 #### Setting up the code editor
 
-To perform certain Git commands that require opening a text editor, such as `git commit --amend` and `git rebase -i`, it's important to configure your code editor correctly. By default, Git opens the text editor in the command-line interface (CLI), which may prevent you from saving and closing the editor after making changes.
+To perform certain Git commands it's important to configure your code editor correctly. By default, Git opens the text editor in the command-line interface (CLI), which may prevent you from saving and closing the editor after making changes.
 
 To set up your code editor properly, you can follow the instructions provided in the Git Basics lesson. Here's the specific section that covers the process: [Changing the Git Commit Message Editor](https://www.theodinproject.com/lessons/foundations-git-basics#changing-the-git-commit-message-editor).
 
@@ -58,38 +41,6 @@ git commit --amend
 What happened here is we first updated the staging area to include the missing file, and then we replaced the last commit with our new one to include the missing file. If we wanted to, we could have changed the message of the commit and it would have overwritten the message of the past commit.
 
 Remember to **only amend commits that have not been pushed anywhere!** The reason for this is that `git commit --amend` does not edit the last commit, it *replaces that commit with an entirely new one*. This means that you could potentially destroy a commit other developers are basing their work on. When rewriting history always make sure that you're doing so in a safe manner, and that your coworkers are aware of what you're doing.
-
-#### Changing multiple commits
-
-Now let's say we have commits further back in our history that we want to modify. This is where the beautiful command `git rebase` comes into play! We're going to get deeper into the complexities of `rebase` later on in this lesson, but for now we're going to start out with some very basic usage.
-
-`git rebase -i` is a command which allows us to interactively stop after each commit we're trying to modify, and then make whatever changes we wish. We do have to tell this command which is the last commit we want to edit. For example, `git rebase -i HEAD~2` allows us to edit the last two commits. Let's see what this looks like in action, go ahead and type in:
-
-```bash
-git log
-git rebase -i HEAD~2
-```
-
-You should notice that when rebasing, the commits are listed in opposite order compared to how we see them when we use `git log`. Take a minute to look through all of the options the interactive tool offers you. Now let's look at the commit messages at the top of the tool. If we wanted to edit one of these commits, we would change the word `pick` to be `edit` for the appropriate commit. If we wanted to remove a commit, we would remove it from the list, and if we wanted to change their order, we would change their position in the list. Let's see what an edit looks like!
-
-```bash
-edit eacf39d Create send file
-pick 92ad0af Create third file and create fourth file
-```
-
-This would allow us to edit the typo in the `Create send file` commit to be `Create second file`. Perform similar changes in your interactive rebase tool, but don't copy and paste the above code since it won't work. Save and exit the editor, which will allow us to edit the commit with the following instructions:
-
-```bash
-git commit --amend
-```
-
-The command above will allow you to amend the commit. Once you're satisfied with your changes, you can complete the rebase with the following:
-
-```bash
-git rebase --continue
-```
-
-So let's edit our commit by typing `git commit --amend`, fixing the typo in the title, and then finishing the rebase by typing `git rebase --continue`. That's all there is to it! Have a look at your handiwork by typing `git log`, and seeing the changed history. It seems simple, but this is a very dangerous tool if misused, so be careful. Most importantly, remember that **if you have to rebase commits in a shared repository, make sure you're doing so for a very good reason that your coworkers are aware of.**
 
 #### Squashing commits
 
@@ -142,8 +93,7 @@ You might be feeling overwhelmed at this point, so let's recap what we've learne
 <div class="lesson-content__panel" markdown="1">
 
 1. Hopefully you'll have made use of branches in your workflow since Revisiting Rock Paper Scissors, but whether you have or have not, refresh on [Basic Branching and Merging](https://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging).
-1. Read the chapter on [Rebasing covered by git-scm](https://git-scm.com/book/en/v2/Git-Branching-Rebasing) for an even deeper dive into Rebasing.
-1. Read the chapter on [Reset covered by git-scm](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) for a deeper dive into `git reset`.
+2. Read the chapter on [Reset covered by git-scm](https://git-scm.com/book/en/v2/Git-Tools-Reset-Demystified) for a deeper dive into `git reset`.
 
 <div class="lesson-note lesson-note--tip" markdown="1">
 
@@ -160,7 +110,6 @@ In modern Git setups, the default branch is typically called `main` instead of `
 The following questions are an opportunity to reflect on key topics in this lesson. If you can't answer a question, click on it to review the material, but keep in mind you are not expected to memorize or master this knowledge.
 
 - [How can you amend your last commit?](#changing-the-last-commit)
-- [What are some different ways to rewrite history?](#changing-multiple-commits)
 - [What does it mean for branches to be pointers?](#branches-are-pointers)
 
 ### Additional resources
@@ -168,5 +117,4 @@ The following questions are an opportunity to reflect on key topics in this less
 This section contains helpful links to related content. It isn't required, so consider it supplemental.
 
 - Read this [Git Cheat Sheet](https://www.atlassian.com/git/tutorials/atlassian-git-cheatsheet) if you need a reference sheet.
-- Watch this [video about Rebase & Merge](https://www.youtube.com/watch?v=f1wnYdLEpgI) for an example of how to use both rebase and merge.
 - Read the chapter on [Branches covered by git-scm](https://git-scm.com/book/en/v2/Git-Branching-Branches-in-a-Nutshell) if you want an even deeper dive into Branches.
